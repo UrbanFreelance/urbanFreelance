@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: config-service
+
+  profiles:
+    active: git,vault
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: #add uri and make vault file model
+        vault:
+          host: localhost
+          token: VaultToken
+          kv-version: 2
+          backend: secret
+          authentication: TOKEN
+          port: 8200
+          scheme: http
+
+server:
+  port: 8070
+
+management:
+  endpoints:
+    web.exposure.include: health,info
+
+  health:
+    probes.enabled: true
+

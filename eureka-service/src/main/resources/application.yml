@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: eureka-service
+
+  cloud:
+    import: "optional:configserver:http://localhost:8070"
+
+eureka:
+  instance:
+    hostname: localhost
+
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web.exposure.include: health,info
+
+  health:
+    probes.enabled: true
+
+server:
+  port: 8071
