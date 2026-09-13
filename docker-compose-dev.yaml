@@ -1,0 +1,10 @@
+services:
+
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    container_name: postgres
+    environment:
+      POSTGRES_DATABASE:
