@@ -21,4 +21,4 @@ management:
     probes.enabled: true
 
 server:
-  port: 8071
+  port: 8070

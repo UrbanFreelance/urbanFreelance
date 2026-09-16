@@ -18,11 +18,12 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String name;
+    private String firstname;
+    private String lastname;
     private String profilePhoto;
     private String headline;
     private Industry industry;
+    private String gender;
 
     private Instant createdAt;
     private Instant deletedAt;

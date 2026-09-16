@@ -20,9 +20,9 @@ COPY --from=builder /app/build/libs/eureka-service-0.0.1-SNAPSHOT.jar license_se
 RUN chown -R MyUser:MyGroup /app
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-  CMD wget --spider --quiet http://localhost:8071/actuator/health || exit 1
+  CMD wget --spider --quiet http://localhost:8070/actuator/health || exit 1
 
-EXPOSE 8071
+EXPOSE 8070
 USER MyUser
 
 ENTRYPOINT ["java","-jar"," eureka-service.jar"]
