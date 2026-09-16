@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: api-gateway
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: urbanlance-web
+            client-secret: KQxXPtD7zb9kOlzptp2JEjE6s7zFBVvC3yENeiRE3SzzmNITUg96v2yxiCBAbeNyn7sM2Yle7zusjBDiDLWkPA
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - profile
+              - email
+
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8073/realms/urbanlance_users_realm
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8073/realms/urbanlance_users_realm
+
+  config:
+    import: "optional:configserver:http://localhost:8071"
+
+#  data:
+#    redis.port: ${REDIS_PORT}
+#    redis.host: ${REDIS_HOST}
+
+
+management:
+  endpoints:
+    web.exposure.include: health,info
+  health.probes.enabled: true
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    search-url:
+#      defaultZone: "http://localhost:8070/eureka"
+
+
+# security
+
+
+
+
+server:
+  port: 8080
+
+
+

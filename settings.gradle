@@ -1,1 +1,11 @@
 rootProject.name = 'urbanLance'
+
+include 'api-gateway'
+include 'eureka-service'
+include 'config-service'
+include 'user'
+include 'job'
+include 'common'
+include 'notification-service'
+include 'recommendation-engine'
+include 'analytics'
