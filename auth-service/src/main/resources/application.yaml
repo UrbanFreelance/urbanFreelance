@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: auth-service
+
+  config:
+    import: "optional:configserver:http://localhost:8071"
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: urbanlance-web
+            client-secret: spdvPRh0LvwZ7kaMskV665S22BZsrWsUysZXnRluA7CyubVRLqNwh0LpWIiyFoFjAls7iSakO7NoZT06il9QGB
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+              - email
+              - profile
+            provider: keycloak
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8073/realms/urbanlance_users_realm
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8073/realms/urbanlance_users_realm
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    search-url:
+#      defaultZone: "http://localhost:8071/eureka"
+
+management:
+  endpoints:
+    web.exposure.include: health,info
+  health.probes.enabled: true
+
+logging.level:
+  org.springframework.security.oauth2: TRACE
+
+server:
+  port: 8072
