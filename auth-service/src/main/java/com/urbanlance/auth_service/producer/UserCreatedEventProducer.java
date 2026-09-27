@@ -15,9 +15,9 @@ public class UserCreatedEventProducer {
 
     private final RoutingKafkaTemplate kafkaTemplate;
 
-    public void send(String email,String preferredName,String fullName){
+    public void send(String id , String email,String preferredName,String fullName){
         UserCreatedEvent request = new UserCreatedEvent(
-                email,preferredName,fullName);
+               id, email,preferredName,fullName);
 
         ProducerRecord<Object,Object> producerRecord = new ProducerRecord<>(
                 "USER_TOPIC",

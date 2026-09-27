@@ -25,6 +25,11 @@ spring:
         jwt:
           issuer-uri: http://localhost:8073/realms/urbanlance_users_realm
 
+keycloak.auth-service-uri: http://localhost:8073
+keycloak.realm: urbanlance_users_realm
+keycloak.resource: urbanlance-web
+keycloak.credentials.secret: spdvPRh0LvwZ7kaMskV665S22BZsrWsUysZXnRluA7CyubVRLqNwh0LpWIiyFoFjAls7iSakO7NoZT06il9QGB
+
 #eureka:
 #  instance:
 #    prefer-ip-address: true
@@ -36,7 +41,7 @@ spring:
 
 management:
   endpoints:
-    web.exposure.include: health,info
+    web.exposure.include: health,info,prometheus
   health.probes.enabled: true
 
 logging.level:

@@ -1,7 +1,7 @@
-package com.urbanlance.user.config;
+package com.urbanlance.job.config;
 
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ModelMapper {
+public class KafkaTopicConfig {
 }

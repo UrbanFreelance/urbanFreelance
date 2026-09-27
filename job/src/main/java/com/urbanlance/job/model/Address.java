@@ -1,21 +1,30 @@
-package com.urbanlance.user.model;
+package com.urbanlance.job.model;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "address")
 public class Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String country;
+    @Column(nullable = false)
     private String state;
+    @Column(nullable = false)
     private String district;
+    @Column(nullable = false)
     private String localAddress;
+    @Column(nullable = false)
     private int pinNumber;
 
     public Address(String country, String state, String district, String localAddress, int pinNumber) {

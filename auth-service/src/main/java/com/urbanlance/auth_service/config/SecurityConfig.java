@@ -2,6 +2,7 @@ package com.urbanlance.auth_service.config;
 
 import com.urbanlance.auth_service.oauth2.CookieBearerTokenConverter;
 import com.urbanlance.auth_service.oauth2.Oauth2SuccessHandler;
+import com.urbanlance.auth_service.repository.RedisAuthorizationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ public class SecurityConfig {
 
     private final Oauth2SuccessHandler successHandler;
     private final CookieBearerTokenConverter cookieBearerTokenConverter;
+    private final RedisAuthorizationRequestRepository redisAuthorizationRequestRepository;
 
     @Bean
     public SecurityWebFilterChain asFilterChain(ServerHttpSecurity http){
@@ -30,11 +32,16 @@ public class SecurityConfig {
         http.oauth2Login(oauth -> oauth
                         .authenticationConverter(cookieBearerTokenConverter)
                         .authenticationSuccessHandler(successHandler)
+                        .authorizationRequestRepository(redisAuthorizationRequestRepository)
                 );
         http.oauth2ResourceServer(resource -> resource
                     .bearerTokenConverter(cookieBearerTokenConverter)
                     .jwt(Customizer.withDefaults())
                 );
+        http.oauth2Client(client -> client
+                .authorizationRequestRepository(redisAuthorizationRequestRepository)
+                .authenticationConverter(cookieBearerTokenConverter)
+        );
 
 //        http.securityContextRepository(NoOpServerSecurityContextRepository.getInstance());
         return http.build();

@@ -57,7 +57,31 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL",""]
+      test: ["CMD-SHELL","wget --spider -q http://localhost/8080/autuator/health || exit 1"]
+      interval: 10s
+      start_period: 20s
+      timeout: 5s
+      retries: 3
+  auth-service:
+    container_name: api-gateway
+    build:
+      context: ../auth-service
+      dockerfile: ../auth-service/Dockerfile
+    ports:
+      - "8072:8072"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL","wget --spider -q http://localhost/8072/autuator/health || exit 1" ]
+      interval: 10s
+      start_period: 20s
+      timeout: 5s
+      retries: 3
 
   config-service:
     container_name: config-service
@@ -84,6 +108,13 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/var/lib/data
+    healthcheck:
+      test: ["CMD-SHELL","redis-cli","-a","ping"]
+      interval: 30s
+      start_period: 20s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
 
   eureka-service:
     container_name: discovery-service
@@ -134,7 +165,24 @@ services:
       api-gateway:
         condition: service_healthy
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    build:
+      context: .
+    ports:
+      - "9090:9090"
+    volumes:
+      - prometheus-data:/prometheus
+      - ./prometheus.yml:prometheus.yaml
+    command:
+      - '--config.file=prometheus.yaml'
+      - '--storage.tsbd.path=/prometheus'
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL"]
 
 volumes:
   postgres-data:
   redis-data:
+  prometheus-data:

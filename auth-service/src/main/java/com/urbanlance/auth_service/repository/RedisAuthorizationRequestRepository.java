@@ -25,7 +25,11 @@ public class RedisAuthorizationRequestRepository implements
         ObjectMapper mapper = new ObjectMapper();
         Mono<String> jsonString = redisTemplate.opsForValue()
                 .get(key);
-        return Mono.just(mapper.convertValue(jsonString.flatMap(),OAuth2AuthorizationRequest.class));
+        return jsonString.flatMap(request ->{
+            OAuth2AuthorizationRequest oAuth2AuthorizationRequest =
+                    mapper.readValue(request,OAuth2AuthorizationRequest.class);
+            return Mono.just(oAuth2AuthorizationRequest);
+        });
     }
 
     @Override
@@ -34,12 +38,21 @@ public class RedisAuthorizationRequestRepository implements
         String jsonString = mapper.writeValueAsString(authorizationRequest);
         redisTemplate.opsForValue()
                 .set(key,jsonString,TTL);
-        return null;
+        return Mono.empty();
     }
 
     @Override
     public Mono<OAuth2AuthorizationRequest> removeAuthorizationRequest(ServerWebExchange exchange) {
-
-        return null;
+        ObjectMapper mapper = new ObjectMapper();
+        Mono<String> jsonString = redisTemplate.opsForValue()
+                        .get(key);
+        Mono<OAuth2AuthorizationRequest> oAuth2AuthorizationRequestMono = jsonString.flatMap(request ->{
+            OAuth2AuthorizationRequest oAuth2AuthorizationRequest =
+                    mapper.readValue(request,OAuth2AuthorizationRequest.class);
+            return Mono.just(oAuth2AuthorizationRequest);
+        });
+        redisTemplate.opsForValue()
+                .delete(key);
+        return oAuth2AuthorizationRequestMono;
     }
 }

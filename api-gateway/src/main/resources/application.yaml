@@ -5,11 +5,19 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071"
 
+  security:
+    oauth2:
+      resourceserver:
+        keycloak:
+          jwt:
+            issue-uri: http://localhost:8073/realms/urbanlance_users_realm
+
   data:
     redis.port: ${REDIS_PORT}
     redis.host: ${REDIS_HOST}
 
 auth.jwt.public.key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnZcAbUK9ABILYorlNaMc+kYfDbFfl66VqdGFv8fzJplI6J0ZT5laJQH292nt/jSZpbSoswnfkCdK3gEZ/zCaTV5s6SglSnctgsvD5wDjn2TTCQsKEy3XOYUD1bKA2iILSOHnicLF88IWhQnpHRGIbA/X9Ht2YRPeqWtSYVMjk8og+SxLkFTlkwvTPeFTdmKfrdEAR6Vx6dNtwSGOAGdiuRsfNyOZ6DY3xnsoI92xpuWVdyxj7LqJBhve56zG7JI4RuEyve9tq7S1ppm48QDca2r6mPwq8OiwXSs6UQkwui1lQojKAUASXU4Ch9njPorIpMIM3WLy2XdC863YOf4YTwIDAQAB
+
 
 management:
   endpoints:

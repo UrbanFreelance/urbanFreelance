@@ -1,5 +1,6 @@
 package com.urbanlance.job.model;
 
+import com.urbanlance.common.domain.Industry;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,13 +20,18 @@ public class JobPosting {
     private Long id;
 
     private String jobName;
+    private Long employerId;
     private Instant applicationDeadline;
     private Double wage;
     private Long minWorkers;
     private Long maxWorkers;
-    private String Industry;
+    private JobIndustry industry;
     @Column(name = "work_type")
-    private AggregateReference<JobWorkType,Integer> workType;
+    @Enumerated(EnumType.STRING)
+    private WorkType workType;
+    private int appliedUsersCount;
+    @Column(name = "location",nullable = false)
+    private AggregateReference<Address,Long> location;
 
     private Instant createdAt;
     private Instant lastModifiedAt;
@@ -34,16 +40,18 @@ public class JobPosting {
 
     @PrePersist
     void persist() {
+        this.appliedUsersCount = 0;
         this.createdAt = Instant.now();
         this.isDeleted = false;
     }
 
-    public JobPosting(String jobName, Instant applicationDeadline, Double wage, Long minWorkers, Long maxWorkers, String industry) {
+    public JobPosting(String jobName, Instant applicationDeadline, Double wage, Long minWorkers, Long maxWorkers, JobIndustry industry,WorkType workType) {
         this.jobName = jobName;
         this.applicationDeadline = applicationDeadline;
         this.wage = wage;
         this.minWorkers = minWorkers;
         this.maxWorkers = maxWorkers;
-        Industry = industry;
+        this.industry = industry;
+        this.workType = workType;
     }
 }

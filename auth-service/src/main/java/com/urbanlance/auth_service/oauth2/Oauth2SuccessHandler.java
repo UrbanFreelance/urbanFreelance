@@ -62,11 +62,7 @@ public class Oauth2SuccessHandler implements ServerAuthenticationSuccessHandler 
                                 .build();
                         exchange.getResponse().addCookie(refreshTokenCookie);
                     }
-                    String email = (String) attr.get("email");
-                    String name = user.getName();
-                    String preferredName = (String) attr.get("preferred_username");
-                    userCreatedEventProducer.send(email,preferredName,name);
-                    return exchange.getResponse().setComplete();
+                    return Mono.empty();
                 });
     }
 }

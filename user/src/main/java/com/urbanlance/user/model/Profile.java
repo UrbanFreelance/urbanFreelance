@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import java.time.Instant;
+import java.util.List;
 
 @Table(name = "user_profile")
 @Getter
@@ -17,13 +18,16 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true,nullable = false)
+    private String authId;
 
-    private String firstname;
-    private String lastname;
+    private String email;
+    private String fullName;
+    private String preferredName;
     private String profilePhoto;
     private String headline;
-    private Industry industry;
-    private String gender;
+    private List<Industry> industries;
+    private Gender gender;
 
     private Instant createdAt;
     private Instant deletedAt;
@@ -39,5 +43,14 @@ public class Profile {
         this.isDeleted = false;
     }
 
+    public Profile(String authId, String email, String fullName, String preferredName) {
+        this.authId = authId;
+        this.email = email;
+        this.fullName = fullName;
+        this.preferredName = preferredName;
+    }
 
+    public enum Gender{
+        MALE,FEMALE,OTHER
+    }
 }
